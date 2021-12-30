@@ -1,3 +1,21 @@
+# Summary of the solution
+
+- [X] Setup a project and create a contract
+  - [X] Only the team can deposit rewards.
+  - [X] Deposited rewards go to the pool of users, not to individual users.
+  - [X] Users should be able to withdraw their deposits along with their share of rewards considering the time when they deposited.
+- [X] Write tests
+  - The tests verify depositing rewards/stakes by the team/clients, distribution proportions of the rewards, diferent cases and combinations.
+  - [X] Deploy your contract
+    - Network ```ropsten```
+    - Contract Address ```0xb07BEAF62Be1C61466A3BEBeCE9e8bc63270B54d```
+    - Transaction Contract Creation ```0xa4747221c6a7759595610e5a9e17040947c415b37d9f937a5847dd9d3ec87c51```
+- [X] Verify your contract
+    - https://ropsten.etherscan.io/address/0xb07BEAF62Be1C61466A3BEBeCE9e8bc63270B54d#code
+- [X] Interact (hardhat task to get the balance)
+    - ```npx hardhat balance --network ropsten```
+    
+-----------------
 # Smart Contract Challenge
 
 ## A) Challenge
