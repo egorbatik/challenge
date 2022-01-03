@@ -152,7 +152,7 @@ describe('ETHPool', () => {
       expect(totalStakeBalanceAfterDistribution).to.eq(5000)
 
       const totalPoolBalanceAfterDistribution = await ethPool.getTotalPoolBalance()
-      expect(totalPoolBalanceAfterDistribution).to.eq(20)
+      expect(totalPoolBalanceAfterDistribution).to.eq(20000)
 
       await expect(ethPool.connect(clientA).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientA.address, 6000);
     });
@@ -203,7 +203,7 @@ describe('ETHPool', () => {
       await expect(ethPool.connect(clientB).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientB.address, 4400);
     });
 
-    it('Deposit -> Distribute -> Deposit, 3 deposits (33/33/33) even rewards, 10 remain due precision  ', async ()=> {
+    it('Deposit -> Distribute -> Deposit, 3 deposits (33/33/33) even rewards, 1 remain due precision  ', async ()=> {
       await ethPool.connect(clientA).deposit({value: 3000})
       const totalStakeBalanceAfterDepositA = await ethPool.getTotalStakeBalance()
       expect(totalStakeBalanceAfterDepositA).to.eq(3000)
@@ -218,9 +218,43 @@ describe('ETHPool', () => {
 
       await ethPool.connect(team).distribute({value:1000});
 
-      await expect(ethPool.connect(clientA).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientA.address, 3330);
-      await expect(ethPool.connect(clientB).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientB.address, 3330);
-      await expect(ethPool.connect(clientC).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientC.address, 3330);
+      await expect(ethPool.connect(clientA).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientA.address, 3333);
+      await expect(ethPool.connect(clientB).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientB.address, 3333);
+      await expect(ethPool.connect(clientC).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientC.address, 3333);
+    });
+
+    it('Deposit -> Deposit -> Distribute ->  Widthdraw()  ', async ()=> {
+      await ethPool.connect(clientA).deposit({value: 3000})
+      const totalStakeBalanceAfterDepositA = await ethPool.getTotalStakeBalance()
+      expect(totalStakeBalanceAfterDepositA).to.eq(3000)
+    
+      await ethPool.connect(clientA).deposit({value: 3000})
+      const totalStakeBalanceAfterDepositA2 = await ethPool.getTotalStakeBalance()
+      expect(totalStakeBalanceAfterDepositA2).to.eq(6000)
+
+      await ethPool.connect(team).distribute({value:1000});
+
+      await expect(ethPool.connect(clientA).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientA.address, 6998);
+
+    });
+
+    it('Deposit -> Deposit -> Deposit -> Distribute ->  Widthdraw()  ', async ()=> {
+      await ethPool.connect(clientA).deposit({value: 3000})
+      const totalStakeBalanceAfterDepositA = await ethPool.getTotalStakeBalance()
+      expect(totalStakeBalanceAfterDepositA).to.eq(3000)
+    
+      await ethPool.connect(clientA).deposit({value: 3000})
+      const totalStakeBalanceAfterDepositA2 = await ethPool.getTotalStakeBalance()
+      expect(totalStakeBalanceAfterDepositA2).to.eq(6000)
+
+      await ethPool.connect(clientA).deposit({value: 3000})
+      const totalStakeBalanceAfterDepositA3 = await ethPool.getTotalStakeBalance()
+      expect(totalStakeBalanceAfterDepositA3).to.eq(9000)
+
+      await ethPool.connect(team).distribute({value:1000});
+
+      await expect(ethPool.connect(clientA).withdraw()).to.emit(ethPool, 'Withdraw').withArgs(clientA.address, 9999);
+
     });
   });
 
